@@ -48,7 +48,7 @@ public class MorphologicalAnalyzer {
         // 解析結果をもとに表記と読みを取得
         for (int i = 0; i < tokens.size(); i++) {
             Token current = tokens.get(i);
-            Token prev = i > 0 ? tokens.get(i - 1) : null;
+            Token prev = (i > 0) ? tokens.get(i - 1) : null;
 
             logger.trace("--------------------------");
             logger.trace("getSurface():" + current.getSurface());

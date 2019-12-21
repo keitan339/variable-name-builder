@@ -7,9 +7,9 @@ import lombok.Data;
 
 class Kana2Roma {
 
-    private final static char[] BOIN = {'A', 'I', 'U', 'E', 'O'};
+    private static final char[] BOIN = {'A', 'I', 'U', 'E', 'O'};
 
-    private final static List<Shiin> SHIIN_LIST = new ArrayList<>();
+    private static final List<Shiin> SHIIN_LIST = new ArrayList<>();
 
     private static String KANA_CHARS = null;
 
@@ -58,20 +58,14 @@ class Kana2Roma {
     // 文字cが、AIUEOのどれかであれば、その位置を返す。
     private static int isBoin(char c) {
         for (int i = 0; i < BOIN.length; ++i) {
-            if (BOIN[i] == c)
+            if (BOIN[i] == c) {
                 return i;
+            }
         }
 
         return -1;
     }
 
-    /**
-     * カタカナの文字列をヘボン式ローマ字に変換
-     *
-     * @param text カタカナ文字列
-     * @return 変換結果のローマ字文字列
-     * @throws Kana2RomaException
-     */
     public String convert(String text) throws Kana2RomaException {
         if (StringUtils.isEmpty(text)) {
             return text;
@@ -92,39 +86,37 @@ class Kana2Roma {
         return sb.toString();
     }
 
-    /*
-     * カタカナ⇒ローマ字変換メソッド
-     *
-     * ・カタカナ文字 c をローマ字に変換する。 ・変換の際に、c の前に処理した文字、prevCharも参照する。 ・結果は、文字列バッファ sbに追加する。
-     */
     private void kc2romajisb(char c, StringBuilder sb, char prevChar) throws Kana2RomaException {
         int pos = KANA_CHARS.indexOf(c);
 
         if (pos >= 0) {
 
-            int g_idx = pos / 5; // 行インデクス 0:ア行、1:カ行、2:サ行 …
-            int d_idx = pos % 5; // 段インデクス 0:ア段、2:イ段、3:ウ段 …
+            int gyoIdx = pos / 5; // 行インデクス 0:ア行、1:カ行、2:サ行 …
+            int danIdx = pos % 5; // 段インデクス 0:ア段、2:イ段、3:ウ段 …
 
             // 現在のバッファの最後の文字を取得
             char lastChar = (sb.length() > 0 ? sb.charAt(sb.length() - 1) : (char) 0);
 
             // すでにバッファに文字があり、かつ入力された文字が、ア行の場合
-            if (sb.length() > 0 && g_idx == 0) {
+            if (sb.length() > 0 && gyoIdx == 0) {
 
                 // バッファの末尾と次の文字が同じ場合、この文字を追加しない。
-                if (isBoin(lastChar) == d_idx) // オオノはOONOではなくONO
+                if (isBoin(lastChar) == danIdx) { // オオノはOONOではなくONO
                     return;
+                }
 
-                if (isBoin(lastChar) == 4 && d_idx == 2) // サトウはSATOUではなくSATO
+                if (isBoin(lastChar) == 4 && danIdx == 2) { // サトウはSATOUではなくSATO
                     return;
+                }
             }
 
             // バッファの末尾の「ッ」を削除
-            if (lastChar == 'ッ')
+            if (lastChar == 'ッ') {
                 sb.deleteCharAt(sb.length() - 1);
+            }
 
             // 入力された文字の、先頭ローマ字を取得
-            String rh = SHIIN_LIST.get(g_idx).roma;
+            String rh = SHIIN_LIST.get(gyoIdx).roma;
 
             /*
             char rhc = (rh.length() > 0 ? rh.charAt(0) : (char) 0);
@@ -140,7 +132,7 @@ class Kana2Roma {
 
 
             // sb.append((lastChar == 'ッ' ? rhc + rh : rh) + BOIN[d_idx]);
-            sb.append(rh + BOIN[d_idx]);
+            sb.append(rh + BOIN[danIdx]);
 
         } else {
 
@@ -158,12 +150,14 @@ class Kana2Roma {
                     case 'ッ': // 促音(小さい「ッ」の場合
 
                         // もし先頭である場合は例外を発生
-                        if (sb.length() == 0)
+                        if (sb.length() == 0) {
                             throw new Kana2RomaException(Kana2RomaException.Type.ILLEGAL_HEAD_CHAR, "ッ");
+                        }
 
                         // もしバッファの末尾も「ッ」の場合、不正なカナの並びとして例外を発生
-                        if (sb.charAt(sb.length() - 1) == 'ッ')
+                        if (sb.charAt(sb.length() - 1) == 'ッ') {
                             throw new Kana2RomaException(Kana2RomaException.Type.ILLEGAL_KANA_SEQUENCE, "ッッ");
+                        }
 
                         // とりあえずそのままバッファに追加
                         sb.append(c);
@@ -175,28 +169,32 @@ class Kana2Roma {
                     case 'ュ':
                     case 'ョ':
                         // もし先頭である場合は例外を発生
-                        if (sb.length() == 0)
+                        if (sb.length() == 0) {
                             throw new Kana2RomaException(Kana2RomaException.Type.ILLEGAL_HEAD_CHAR, "" + c);
+                        }
 
                         char[] checks = {'ッ', 'ャ', 'ュ', 'ョ'};
                         for (int j = 0; j < checks.length; ++j) {
-                            if (prevChar == checks[j]) // バッファ末尾が「ッ」もしくは「ャュョ」の場合、例外を発生
+                            if (prevChar == checks[j]) { // バッファ末尾が「ッ」もしくは「ャュョ」の場合、例外を発生
                                 throw new Kana2RomaException(Kana2RomaException.Type.ILLEGAL_KANA_SEQUENCE,
                                         "" + prevChar + c);
+                            }
                         }
 
-                        if (sb.toString().endsWith("I")) // バッファ末尾の「I」を削除
+                        if (sb.toString().endsWith("I")) { // バッファ末尾の「I」を削除
                             sb.deleteCharAt(sb.length() - 1);
+                        }
 
                         // ヘボン式対応(チャ,チュ,チョは、CHA,CHU,CHOにする。)
                         if (sb.toString().endsWith("T")) { // バッファ末尾が「T」なら「CH」に変換
                             sb.deleteCharAt(sb.length() - 1);
                             sb.append("CH" + BOIN["ャ/ュ/ョ".indexOf(c)]);
                         } else if (sb.toString().endsWith("SH") || sb.toString().endsWith("CH")
-                                || sb.toString().endsWith("J"))
+                                || sb.toString().endsWith("J")) {
                             sb.append(BOIN["ャ/ュ/ョ".indexOf(c)]);
-                        else
+                        } else {
                             sb.append("Y" + BOIN["ャ/ュ/ョ".indexOf(c)]);
+                        }
 
                         break;
                     case 'ー':
