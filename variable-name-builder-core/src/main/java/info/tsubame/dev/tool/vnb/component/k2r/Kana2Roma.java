@@ -39,8 +39,8 @@ class Kana2Roma {
         SHIIN_LIST.add(new Shiin("パピプペポ", "P"));
 
         KANA_CHARS = "";
-        for (int i = 0; i < SHIIN_LIST.size(); ++i) {
-            KANA_CHARS = KANA_CHARS + SHIIN_LIST.get(i).getKana();
+        for (Shiin shin : SHIIN_LIST) {
+            KANA_CHARS = KANA_CHARS + shin.getKana();
         }
     }
 
@@ -116,7 +116,7 @@ class Kana2Roma {
             }
 
             // 入力された文字の、先頭ローマ字を取得
-            String rh = SHIIN_LIST.get(gyoIdx).roma;
+            String rh = SHIIN_LIST.get(gyoIdx).getRoma();
 
             /*
             char rhc = (rh.length() > 0 ? rh.charAt(0) : (char) 0);
@@ -174,8 +174,8 @@ class Kana2Roma {
                         }
 
                         char[] checks = {'ッ', 'ャ', 'ュ', 'ョ'};
-                        for (int j = 0; j < checks.length; ++j) {
-                            if (prevChar == checks[j]) { // バッファ末尾が「ッ」もしくは「ャュョ」の場合、例外を発生
+                        for (char check : checks) {
+                            if (prevChar == check) { // バッファ末尾が「ッ」もしくは「ャュョ」の場合、例外を発生
                                 throw new Kana2RomaException(Kana2RomaException.Type.ILLEGAL_KANA_SEQUENCE,
                                         "" + prevChar + c);
                             }

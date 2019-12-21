@@ -15,6 +15,7 @@ public class Kana2RomaException extends Exception {
             this.message = message;
         }
 
+        @Override
         public String toString() {
             return this.message;
         }
@@ -28,6 +29,7 @@ public class Kana2RomaException extends Exception {
         this.cause = cause;
     }
 
+    @Override
     public String getMessage() {
         return this.type.toString().replace("%s", this.cause);
     }

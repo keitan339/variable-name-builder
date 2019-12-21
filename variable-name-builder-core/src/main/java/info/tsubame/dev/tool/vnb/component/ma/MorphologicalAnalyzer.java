@@ -50,26 +50,28 @@ public class MorphologicalAnalyzer {
             Token current = tokens.get(i);
             Token prev = (i > 0) ? tokens.get(i - 1) : null;
 
-            logger.trace("--------------------------");
-            logger.trace("getSurface():" + current.getSurface());
-            logger.trace("getPartOfSpeechLevel1():" + current.getPartOfSpeechLevel1());
-            logger.trace("getPartOfSpeechLevel2():" + current.getPartOfSpeechLevel2());
-            logger.trace("getPartOfSpeechLevel3():" + current.getPartOfSpeechLevel3());
-            logger.trace("getPartOfSpeechLevel4():" + current.getPartOfSpeechLevel4());
-            logger.trace("getLemma():" + current.getLemma());
-            logger.trace("getLemmaReadingForm():" + current.getLemmaReadingForm());
-            logger.trace("getConjugationForm():" + current.getConjugationForm());
-            logger.trace("getConjugationType():" + current.getConjugationType());
-            logger.trace("getFinalSoundAlterationForm():" + current.getFinalSoundAlterationForm());
-            logger.trace("getFinalSoundAlterationType():" + current.getFinalSoundAlterationType());
-            logger.trace("getLanguageType():" + current.getLanguageType());
-            logger.trace("getPronunciation():" + current.getPronunciation());
-            logger.trace("getPronunciationBaseForm():" + current.getPronunciationBaseForm());
-            logger.trace("getAllFeatures():" + current.getAllFeatures());
+            if (logger.isTraceEnabled()) {
+                logger.trace("--------------------------");
+                logger.trace("getSurface():" + current.getSurface());
+                logger.trace("getPartOfSpeechLevel1():" + current.getPartOfSpeechLevel1());
+                logger.trace("getPartOfSpeechLevel2():" + current.getPartOfSpeechLevel2());
+                logger.trace("getPartOfSpeechLevel3():" + current.getPartOfSpeechLevel3());
+                logger.trace("getPartOfSpeechLevel4():" + current.getPartOfSpeechLevel4());
+                logger.trace("getLemma():" + current.getLemma());
+                logger.trace("getLemmaReadingForm():" + current.getLemmaReadingForm());
+                logger.trace("getConjugationForm():" + current.getConjugationForm());
+                logger.trace("getConjugationType():" + current.getConjugationType());
+                logger.trace("getFinalSoundAlterationForm():" + current.getFinalSoundAlterationForm());
+                logger.trace("getFinalSoundAlterationType():" + current.getFinalSoundAlterationType());
+                logger.trace("getLanguageType():" + current.getLanguageType());
+                logger.trace("getPronunciation():" + current.getPronunciation());
+                logger.trace("getPronunciationBaseForm():" + current.getPronunciationBaseForm());
+                logger.trace("getAllFeatures():" + current.getAllFeatures());
+            }
 
             if (current.getLanguageType().equals("記号")) {
                 String partOfSpeechLevel2 = current.getPartOfSpeechLevel2();
-                if (!partOfSpeechLevel2.equals("文字") && !partOfSpeechLevel2.equals("一般")) {
+                if (!StringUtils.equals(partOfSpeechLevel2, "文字") && !StringUtils.equals(partOfSpeechLevel2, "一般")) {
                     continue;
                 }
             }
@@ -96,7 +98,7 @@ public class MorphologicalAnalyzer {
                         current.setReading(current.getSurface());
 
                         words.remove(i + 1);
-                        i--;
+                        i = i - 1;
                     }
                 }
             }
@@ -132,7 +134,7 @@ public class MorphologicalAnalyzer {
 
                 beforeConcatIndex = i;
                 words.remove(i);
-                i--;
+                i = i - 1;
 
             }
         }
