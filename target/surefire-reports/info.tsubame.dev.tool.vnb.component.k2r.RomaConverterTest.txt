@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: info.tsubame.dev.tool.vnb.component.k2r.RomaConverterTest
--------------------------------------------------------------------------------
-Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.006 s - in info.tsubame.dev.tool.vnb.component.k2r.RomaConverterTest
