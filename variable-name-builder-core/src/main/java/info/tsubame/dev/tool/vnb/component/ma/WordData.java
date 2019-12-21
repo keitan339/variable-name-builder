@@ -12,14 +12,8 @@ public class WordData implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    /**
-     * 表記
-     */
     private String surface;
 
-    /**
-     * 読み
-     */
     private String reading;
 
 }

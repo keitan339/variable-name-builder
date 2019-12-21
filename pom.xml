@@ -67,12 +67,20 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
         <version>3.1.0</version>
+        <dependencies>
+          <dependency>
+            <groupId>com.puppycrawl.tools</groupId>
+            <artifactId>checkstyle</artifactId>
+            <version>8.27</version>
+          </dependency>
+        </dependencies>
         <configuration>
           <configLocation>build-tools/checkstyle.xml</configLocation>
           <encoding>UTF-8</encoding>
-          <consoleOutput>true</consoleOutput>
           <failsOnError>true</failsOnError>
-          <linkXRef>false</linkXRef>
+          <failOnViolation>true</failOnViolation>
+          <violationSeverity>error</violationSeverity>
+          <consoleOutput>true</consoleOutput>
         </configuration>
         <executions>
           <execution>
