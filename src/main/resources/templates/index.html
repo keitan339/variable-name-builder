@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>変数名ジェネレーター</title>
+    <script type="text/javascript" src="../jquery-3.4.1/jquery-3.4.1.min.js" th:src="@{/jquery-3.4.1/jquery-3.4.1.min.js}"></script>
+    <script type="text/javascript" src="../js-cookie/js.cookie.min.js" th:src="@{/js-cookie/js.cookie.min.js}"></script>
+    <script type="text/javascript" src="../bootstrap-4.3.1-dist/js/bootstrap.min.js" th:src="@{/bootstrap-4.3.1-dist/js/bootstrap.min.js}"></script>
+    <link type="text/css" rel="stylesheet" href="../bootstrap-4.3.1-dist/css/bootstrap.min.css" th:href="@{/bootstrap-4.3.1-dist/css/bootstrap.min.css}">
+    <script type="text/javascript" src="../public/js/index.js" th:src="@{/js/index.js}"></script>
+    <link type="text/css" rel="stylesheet" href="../public/css/index.css" th:href="@{/css/index.css}">
+</head>
+<body>
+<form>
+    <div class="jumbotron bg-light">
+        <h2>変数名ジェネレーター</h2>
+    </div>
+
+    <div class="form-group">
+        <div class="container-fluid">
+
+            <div class="row align-items-center">
+                <div class="col-sm-5" id="srcTextCol">
+                    <div style="text-align:center">＜ 変換文字列 ＞</div>
+                    <textarea rows="25" id="srcText"></textarea>
+                </div>
+                <div class="col-sm-2">
+                    <button id="generateBtn" type="button" class="btn btn-primary btn-lg btn-block">→→→<br>変 換</button>
+                    <div id="loading">
+                        <div class="spinner-border text-light" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+
+                    <div id="formatBlock">
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="radio" name="format" class="form-check-input" value="field">
+                                メンバー名形式<br>(aaaAaa)
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="radio" name="format" class="form-check-input" value="class">
+                                クラス名形式<br>(AaaAaa)
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="radio" name="format" class="form-check-input" value="constant">
+                                定数名形式<br>(AAA_AAA)
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-5" id="resultTextCol">
+                    <div style="text-align:center">＜ 変換結果 ＞</div>
+                    <textarea rows="25" id="resultText"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="errorDialog" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title">エラー</h5>
+                </div>
+                <div class="modal-body">
+                    <span id="message"></span>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <input id="contextPath" type="hidden" th:value="${#request.getContextPath()}" />
+</form>
+</body>
+</html>

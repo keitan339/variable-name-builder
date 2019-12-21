@@ -1,0 +1,4 @@
+info/tsubame/dev/tool/vnb/service/VnbServiceTest.class
+info/tsubame/dev/tool/vnb/component/ma/MorphologicalAnalyzerTest.class
+info/tsubame/dev/tool/vnb/component/k2r/RomaConverterTest.class
+info/tsubame/dev/tool/vnb/component/SanitizerTest.class
